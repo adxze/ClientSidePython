@@ -1,0 +1,5 @@
+pyshark
+requests
+configparser
+tabulate
+netifaces

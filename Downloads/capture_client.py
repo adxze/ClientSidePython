@@ -7,7 +7,7 @@ and sending the results to the DiddySec API. It can be set up as a system servic
 to run continuously.
 
 Usage:
-    python capture_client.py --interface en0 --interval 10 --api-key "this-is-api-key-lol" --api-url "https://web-production-8fe18.up.railway.app"
+    python capture_client.py --interface en0 --interval 10 --api-key "this-is-api-key" --api-url "https://web-production-8fe18.up.railway.app"
 """
 
 import os
@@ -30,7 +30,7 @@ import threading
 import signal
 import configparser
 
-# Try to import tabulate for better display
+
 try:
     from tabulate import tabulate
 
@@ -433,7 +433,7 @@ def get_detection_history(api_url, api_key, limit=10, critical_only=False, hostn
     try:
         logger.info(f"Fetching detection history from API...")
 
-        # Build query parameters
+
         params = {'limit': limit}
         if critical_only:
             params['critical_only'] = 'true'
@@ -490,12 +490,12 @@ def display_detection_history(results):
 
     print(f"\n===== DiddySec Detection History ({len(results)} records) =====\n")
 
-    # Prepare table data
+
     table_data = []
     for result in results:
         timestamp = result.get('timestamp', '')
         if timestamp:
-            # Format the timestamp for display
+
             try:
                 dt = datetime.datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
                 timestamp = dt.strftime('%Y-%m-%d %H:%M:%S')
@@ -520,13 +520,13 @@ def display_detection_history(results):
         ]
         table_data.append(row)
 
-    # Print the table
+
     headers = ["Timestamp", "Hostname", "Location", "Normal", "Intrusion", "Intrusion %", "Status"]
 
     if HAS_TABULATE:
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
     else:
-        # Simple table format if tabulate is not available
+
         print(" | ".join(headers))
         print("-" * 100)
         for row in table_data:
